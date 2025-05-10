@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  redis:
+    image: docker.io/library/redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+
+  redis-commander:
+    image: docker.io/rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+
+volumes:
+  redis-data:
